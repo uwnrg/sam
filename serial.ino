@@ -1,27 +1,43 @@
-const int SOL_1_PIN = 7;
-const int SOL_2_PIN = 8;
-const int SOL_3_PIN = 9;
-const int SOL_4_PIN = 10;
+const int SOL_EAST_PIN = 7;
+const int SOL_SOUTH_PIN = 8;
+const int SOL_BRAKE_PIN = 9;
+const int SOL_WEST_PIN = 10;
+const int SOL_NORTH_PIN = 11;
 
 #define BAUD_RATE 9600
 
 void setup () {
-    // setup the serial port
-    Serial.begin(BAUD_RATE);
-    
-    // Wait until serial port opens
-    while (!Serial) {}
+  // setup the serial port
+  Serial.begin(BAUD_RATE);
 
-    pinMode(SOL_1_PIN, OUTPUT);
-    pinMode(SOL_2_PIN, OUTPUT);
-    pinMode(SOL_3_PIN, OUTPUT);
-    pinMode(SOL_4_PIN, OUTPUT);
+  // Wait until serial port opens
+  while (!Serial) {
+  }
+  pinMode(SOL_EAST_PIN, OUTPUT);
+  pinMode(SOL_SOUTH_PIN, OUTPUT);
+  pinMode(SOL_BRAKE_PIN, OUTPUT);
+  pinMode(SOL_WEST_PIN, OUTPUT);
+  pinMode(SOL_NORTH_PIN, OUTPUT);
 }
 
 void loop () {
-    digitalWrite(SOL_1_PIN, HIGH);
-    delay(1000);
-    digitalWrite(SOL_1_PIN, LOW);
-    delay(1000);
+  //Voltage: 3.21 V
+  //Pulse Length: 30 ms
+  //Delay Time: 10 ms
+  digitalWrite(SOL_NORTH_PIN, HIGH);
+  delay(30);
+  digitalWrite(SOL_NORTH_PIN, LOW);
+  delay(10);
+  digitalWrite(SOL_WEST_PIN, HIGH);
+  delay(30);
+  digitalWrite(SOL_WEST_PIN, LOW);
+  delay(10);
+  digitalWrite(SOL_SOUTH_PIN, HIGH);
+  delay(30);
+  digitalWrite(SOL_SOUTH_PIN, LOW);
+  delay(10);
+  digitalWrite(SOL_EAST_PIN, HIGH);
+  delay(30);
+  digitalWrite(SOL_EAST_PIN, LOW);
+  delay(10);
 }
-
