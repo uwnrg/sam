@@ -28,9 +28,8 @@ void loop () {
   //Delay Time: 10 ms
   if(Serial.available()) {
     incomingByte = Serial.read();
-    Serial.println("Received data");
+    Serial.println(incomingByte);
   }
-  Serial.println("Test");
   digitalWrite(SOL_SOUTH_PIN, LOW);
   delay(3000);
   digitalWrite(SOL_SOUTH_PIN, LOW);
@@ -40,7 +39,7 @@ void loop () {
   //digitalWrite(SOL_WEST_PIN, LOW);
   //delay(10);
   //digitalWrite(SOL_SOUTH_PIN, HIGH);
-  //delay(30);
+  //delay(30 
   //digitalWrite(SOL_SOUTH_PIN, LOW);8uu8iki,,km,k,m,
   //delay(10);
   //digitalWrite(SOL_EAST_PIN, HIGH);
