@@ -12,18 +12,18 @@
 //X-axis corresponds to pin A
 const int controlX = 12;
 const int solX = 3;
-const int brakeX = 9;
+const int brakeX = 9;    
 
 //Y-axis corresponds to pin B
-const int controlY = 11; 
-const int solY = 13;
+const int controlY = 13; 
+const int solY = 11;
 const int brakeY = 8;
 
 // TODO: make this an enum
-const short UP    = 0b110001;
-const short RIGHT = 0b110010;
-const short LEFT  = 0b111000;
-const short DOWN  = 0b110100;
+const short UP    = 0b110100;
+const short RIGHT = 0b111000;
+const short LEFT  = 0b110010;
+const short DOWN  = 0b110001;
 
 // Input bytes from Controls
 int incomingByte;
@@ -50,84 +50,84 @@ void setup () {
   pinMode(A1, INPUT);
 
   
-  analogWrite(brakeX, 0);
-  analogWrite(brakeY, 0);
+  digitalWrite(brakeX, HIGH);
+  digitalWrite(brakeY, HIGH);
   analogWrite(solX, 0);
   analogWrite(solY, 0);
   
-  analogWrite(controlX, 0);
-  analogWrite(controlY, 0);
-  
-  Serial.println("SAM is ready");
+  digitalWrite(controlX, HIGH);
+  digitalWrite(controlY, HIGH);
+   
+  Serial.print("SAM is ready");
 }
 
 
 void moveX(short dir) {
   Serial.print("Moving ");
   if (dir == RIGHT) {
-    analogWrite(controlX, 255);
+    digitalWrite(controlX, HIGH);
     Serial.print("RIGHT");
   } else if (dir == LEFT) {
-    analogWrite(controlX, 0);
+    digitalWrite(controlX, LOW);
     Serial.print("LEFT");
   } else {
     return;
   }
   Serial.print(" -- ");
   
-  delay(50);
+  delay(5);
   
   // Set strength of solenoid using PWM, can be any value [0, 255]
-  analogWrite(solX, 255);
+  analogWrite(solX, 200);
   analogWrite(solY, 0);
 
   // Turn brake on or off to allow current to flow through pins
-  analogWrite(brakeX, 0);
-  analogWrite(brakeY, 255);
+  digitalWrite(brakeX, LOW);
+  digitalWrite(brakeY, HIGH);
   int currentX = analogRead(A0);
-  Serial.println("currentX is:" + currentX); 
+  Serial.println("currentX is:");
+  Serial.println(currentX);
   // Movement time
-  delay(500);
-  
-  // Stop solenoids
-  analogWrite(solX, 0);
-  analogWrite(solY, 0);
-  
-  // Brake
-  analogWrite(brakeX, 0);
-  analogWrite(brakeY, 0);
-  
   delay(50);
   
+//  // Stop solenoids
+//  analogWrite(solX, 0);
+//  analogWrite(solY, 0);
+//  
+//  // Brake
+//  digitalWrite(brakeX, HIGH);
+//  digitalWrite(brakeY, HIGH);
+    
   Serial.println("done");
 }
 
 void moveY(short dir) {
   Serial.print("Moving ");
   if (dir == UP) {
-    analogWrite(controlY, 255);
+    digitalWrite(controlY, HIGH);
     Serial.print("UP");
   } else if (dir == DOWN) {
-    analogWrite(controlY, 100);
+    digitalWrite(controlY, LOW);
     Serial.print("DOWN");
   } else {
     return;
   }
   Serial.print(" -- ");
   
-  delay(50);
+  delay(10);
   
   analogWrite(solX, 0);
-  analogWrite(solY, 255);
+  analogWrite(solY, 200);
   
-  analogWrite(brakeX, 255);
-  analogWrite(brakeY, 0);
+  digitalWrite(brakeX, HIGH);
+  digitalWrite(brakeY, LOW);
   
-  int currentY = analogRead(A0);
-  Serial.println("currentY is:" + currentY); 
+  int currentY = analogRead(A1);
+  Serial.println("currentY is:"); 
+  Serial.println(currentY);
   
-  // Half second wait time
-  delay(500);
+  // Movement time
+  delay(50);
   
   analogWrite(solX, 0);
   analogWrite(solY, 0);
@@ -135,7 +135,6 @@ void moveY(short dir) {
   digitalWrite(brakeX, HIGH);
   digitalWrite(brakeY, HIGH);
   
-  delay(50);
   
   Serial.println("done");
 }
@@ -149,10 +148,12 @@ void loop () {
   // Set strength of the solenoid using PWM, can be any value [0,255]
   //analogWrite(solX, 255);
   //analogWrite(solY, 0);
+ 
+  
   
   if( Serial.available() ) {
     incomingByte = Serial.read();
-    
+  
     Serial.println(incomingByte, BIN);
     // TODO: take one byte and separate it properly to X and Y directions
     if (incomingByte == UP || incomingByte == DOWN) {
@@ -161,6 +162,5 @@ void loop () {
       moveX(incomingByte);
     }
   }
-  
-  delay(5);
-}
+
+ }

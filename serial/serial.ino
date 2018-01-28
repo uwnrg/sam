@@ -11,10 +11,11 @@ int incomingByte;
 void setup () {
   // setup the serial port
   Serial.begin(BAUD_RATE);
-
+  Serial.write("I'm Alive!!\n");
   // Wait until serial port opens
   while (!Serial) {
   }
+  Serial.write("Connection established\n");
   pinMode(SOL_EAST_PIN, OUTPUT);
   pinMode(SOL_SOUTH_PIN, OUTPUT);
   pinMode(SOL_BRAKE_PIN, OUTPUT);
@@ -30,7 +31,7 @@ void loop () {
     incomingByte = Serial.read();
     Serial.println(incomingByte);
   }
-  digitalWrite(SOL_SOUTH_PIN, LOW);
+  digitalWrite(SOL_SOUTH_PIN, HIGH);
   delay(3000);
   digitalWrite(SOL_SOUTH_PIN, LOW);
   delay(10);
