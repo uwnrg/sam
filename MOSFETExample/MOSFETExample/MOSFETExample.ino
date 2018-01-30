@@ -8,15 +8,14 @@
 
 #define BAUD_RATE 9600
 
-
 //X-axis corresponds to pin A
 const int LEDTest = 5;
-const int UpPin = 6;
-const int DownPin = 9;    
+const int UpPin = 9;
+const int DownPin = 11;
 
 //Y-axis corresponds to pin B
-const int LeftPin = 11; 
-const int RightPin = 10;
+const int LeftPin = 10;
+const int RightPin = 6;
 const int Brake = 3;
 
 // TODO: make this an enum
@@ -47,6 +46,9 @@ void setup () {
   pinMode(RightPin, OUTPUT);
   pinMode(Brake, OUTPUT);
   
+  
+  digitalWrite(DownPin, LOW);
+  
   Serial.print("SAM is ready");
 }
 
@@ -67,17 +69,18 @@ void moveX(short dir) {
   delay(5);
   
   // Set strength of solenoid using PWM, can be any value [0, 255]
+  /*
   if (dir == RIGHT) {
     analogWrite(RightPin, 200);
     analogWrite(LeftPin, 0);
   } else if (dir == LEFT) {
     analogWrite(RightPin, 0);
     analogWrite(LeftPin, 200);
-  } 
+  }*/
   
 
   // Movement time
-  delay(50);
+  delay(1000);
   
   // Stop solenoids
  if (dir == RIGHT) {
@@ -106,19 +109,21 @@ void moveY(short dir) {
   Serial.print(" -- ");
   
   delay(5);
-  
+  /*
   if (dir == UP) {
     analogWrite(UpPin, 200);
     analogWrite(DownPin, 0);
   } else if (dir == DOWN) {
     analogWrite(UpPin, 0);
     analogWrite(DownPin, 200);
-  } 
+    
+
+  } */
   
   
   
   // Movement time
-  delay(50);
+  delay(1000);
   
  // Stop solenoids
  if (dir == UP) {
