@@ -1,4 +1,4 @@
-// Basic Code for MSOSFET Example
+// Basic Code for MOSFET Example
 // Written by: Kash Pirani
 // Alternates activating solenoids in X and Y axis to display capabilities of motor shield
 
@@ -9,14 +9,19 @@
 #define BAUD_RATE 9600
 
 //X-axis corresponds to pin A
-const int LEDTest = 5;
-const int UpPin = 9;
-const int DownPin = 11;
-
-//Y-axis corresponds to pin B
-const int LeftPin = 10;
-const int RightPin = 6;
-const int Brake = 3;
+const int LEDTest = 1;
+const int UpPin = 6;
+const int DownPin = 9;
+// were all 220 before
+const int dPower = 255; //down solenoid power
+const int rPower = 255; //right solenoid power
+const int lPower = 255; //left solenoid power
+const int uPower = 255; //up solenoid power 
+const int movementTime = 15; 
+//Y-axis corresponds to pin
+const int LeftPin = 11;
+const int RightPin =3;
+const int Brake = 4;
 
 // TODO: make this an enum
 const short UP    = 0b110100;
@@ -45,9 +50,13 @@ void setup () {
   pinMode(LeftPin, OUTPUT);
   pinMode(RightPin, OUTPUT);
   pinMode(Brake, OUTPUT);
-  
-  
+ 
+  digitalWrite(LEDTest, LOW);
   digitalWrite(DownPin, LOW);
+  digitalWrite(UpPin, LOW);
+  digitalWrite(LeftPin, LOW);
+  digitalWrite(RightPin, LOW);
+  digitalWrite(Brake, LOW);
   
   Serial.print("SAM is ready");
 }
@@ -55,40 +64,34 @@ void setup () {
 
 void moveX(short dir) {
   Serial.print("Moving ");
-  if (dir == RIGHT) {
-    digitalWrite(RightPin, HIGH);
-    Serial.print("RIGHT");
-  } else if (dir == LEFT) {
-    digitalWrite(LeftPin, HIGH);
-    Serial.print("LEFT");
-  } else {
-    return;
-  }
   Serial.print(" -- ");
   
   delay(5);
   
   // Set strength of solenoid using PWM, can be any value [0, 255]
-  /*
+  
   if (dir == RIGHT) {
-    analogWrite(RightPin, 200);
+    analogWrite(RightPin, rPower);
     analogWrite(LeftPin, 0);
+    Serial.print("RIGHT");
   } else if (dir == LEFT) {
     analogWrite(RightPin, 0);
-    analogWrite(LeftPin, 200);
-  }*/
+    analogWrite(LeftPin, lPower);
+    //digitalWrite(LeftPin, HIGH);
+    Serial.print("LEFT");
+  }
   
 
   // Movement time
-  delay(1000);
+  delay(movementTime);
   
   // Stop solenoids
  if (dir == RIGHT) {
     digitalWrite(RightPin, LOW);
-    Serial.print("RIGHT");
+    Serial.print(" RIGHT ");
   } else if (dir == LEFT) {
     digitalWrite(LeftPin, LOW);
-    Serial.print("LEFT");
+    Serial.print(" LEFT ");
   }
   
   
@@ -97,33 +100,23 @@ void moveX(short dir) {
 
 void moveY(short dir) {
   Serial.print("Moving ");
-   if (dir == UP) {
-    digitalWrite(UpPin, HIGH);
-    Serial.print("UP");
-  } else if (dir == DOWN) {
-    digitalWrite(DownPin, HIGH);
-    Serial.print("DOWN");
-  } else {
-    return;
-  }
   Serial.print(" -- ");
   
   delay(5);
-  /*
   if (dir == UP) {
-    analogWrite(UpPin, 200);
+    Serial.print("UP");
+    analogWrite(UpPin, uPower);
     analogWrite(DownPin, 0);
   } else if (dir == DOWN) {
+    Serial.print("DOWN");
     analogWrite(UpPin, 0);
-    analogWrite(DownPin, 200);
-    
-
-  } */
+    analogWrite(DownPin, dPower);
+  } 
   
   
   
   // Movement time
-  delay(1000);
+  delay(movementTime);
   
  // Stop solenoids
  if (dir == UP) {
@@ -147,9 +140,7 @@ void loop () {
   // Set strength of the solenoid using PWM, can be any value [0,255]
   //analogWrite(solX, 255);
   //analogWrite(solY, 0);
- 
-  
-  
+   
   if( Serial.available() ) {
     incomingByte = Serial.read();
   
