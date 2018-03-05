@@ -1,2 +1,3 @@
-# sam
-Arduino files for SAM
+# SAM
+Arduino files for SAM microcontroller.
+
