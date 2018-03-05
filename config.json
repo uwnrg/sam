@@ -1,0 +1,10 @@
+{
+  "board": "uno",
+  "ide": "clion",
+  "framework": "cosa",
+  "generator": "",
+  "port": "",
+  "cosa-libraries": "",
+  "build-flags": "",
+  "module-flags": {}
+}
