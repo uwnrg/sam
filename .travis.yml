@@ -9,4 +9,5 @@ install:
   - pip install wcosa
 script:
   - wcosa update
+  - wcosa package install waterloop/wlib
   - wcosa build
