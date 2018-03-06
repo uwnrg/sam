@@ -10,7 +10,17 @@
 
 IOStream &operator<<(IOStream &ios, const string &str);
 
+IOStream &operator<<(IOStream &ios, const vector2i &vec);
+
+byte_array read_blocking(Serial &serial, size_t count);
+
+byte_array read_up_to(Serial &serial, size_t count);
+
 byte_array read_available(Serial &serial);
+
+byte_array read_available_until(Serial &serial, char end);
+
+byte_array __read_unsafe(Serial &serial, size_t count);
 
 string to_string(const byte_array &bytes);
 
