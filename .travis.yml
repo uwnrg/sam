@@ -10,4 +10,5 @@ install:
 script:
   - wcosa update
   - wcosa package install waterloop/wlib
+  - wcosa update
   - wcosa build
