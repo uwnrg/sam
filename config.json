@@ -1,10 +1,12 @@
 {
-  "board": "uno", 
+  "board": "mega2560", 
   "ide": "clion", 
   "framework": "cosa", 
   "generator": "", 
   "port": "", 
   "cosa-libraries": "", 
   "build-flags": "", 
-  "module-flags": {}
+  "module-flags": {
+    "wlib": "MAX_ALLOCATORS=10u NUM_BLOCKS=40u"
+  }
 }
