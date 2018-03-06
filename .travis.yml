@@ -1,0 +1,14 @@
+dist: trusty
+sudo: false
+language: python
+before_install:
+  - sudo apt-get update -qq
+install:
+  - sudo apt-get install -qq gcc-avr avr-libc avrdude -y
+  - pip install --upgrade pip
+  - pip install wcosa
+script:
+  - wcosa update
+  - wcosa package install waterloop/wlib
+  - wcosa update
+  - wcosa build
