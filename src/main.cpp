@@ -1,26 +1,12 @@
 #include <Cosa/RTT.hh>
-#include <Cosa/OutputPin.hh>
-#include <Cosa/PWMPin.hh>
 #include <Cosa/Trace.hh>
 #include <Cosa/UART.hh>
 
 #include "types.h"
 #include "utility.h"
+#include "sam.h"
 
-// Solenoid control and brake pins
-OutputPin control_x(Board::D12);
-OutputPin control_y(Board::D13);
-
-OutputPin brake_x(Board::D9);
-OutputPin brake_y(Board::D8);
-
-PWMPin solenoid_x(Board::PWM0);
-PWMPin solenoid_y(Board::PWM5);
-
-// Move vector and time in milliseconds received
-vector2i move_vector;
-uint8_t time_ms;
-
+Sam sam;
 
 void setup() {
     uart.begin(9600);
@@ -34,14 +20,8 @@ void setup() {
     trace << endl;
     trace << "Connection Established" << endl;
 
-    brake_x.high();
-    brake_y.high();
-
-    control_x.high();
-    control_y.high();
-
-    solenoid_x.write(0);
-    solenoid_y.write(0);
+    // Power-up SAM
+    sam.begin();
 
     trace << "SAM is ready" << endl;
 }
@@ -52,8 +32,8 @@ void setup() {
  * Delay Time:   10 ms
  *
  * Set strength of solenoid using PWM [0-255].
- * @code solenoid_x.write(0)   @endcode
- * @code solenoid_y.write(255) @endcode
+ * @code m_solenoid_x.write(0)   @endcode
+ * @code m_solenoid_y.write(255) @endcode
  */
 void loop() {
     byte_array bytes = read_available(uart);
