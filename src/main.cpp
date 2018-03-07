@@ -38,10 +38,10 @@ void setup() {
  * @code m_solenoid_y.write(255) @endcode
  */
 void loop() {
-    byte_array bytes = read_available(uart);
-    if (bytes.size() == 5) {
+    if (uart.available() >= 6) {
+        byte_array bytes = read_up_to(uart, 6);
         auto data = decode_message(bytes);
         trace << get<0>(data) << " : " << get<1>(data) << endl;
-        sam.execute_move(data);
     }
+
 }

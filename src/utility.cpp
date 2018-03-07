@@ -1,5 +1,6 @@
 #include "utility.h"
 
+
 IOStream &operator<<(IOStream &ios, const string &str) {
     return ios << str.c_str();
 }
@@ -8,14 +9,16 @@ IOStream &operator<<(IOStream &ios, const vector2i &vec) {
     return ios << '(' << vec.x() << ',' << ' ' << vec.y() << ')';
 }
 
-byte_array read_blocking(Serial &serial, size_t count) {
-    bool was_blocking = serial.is_blocking();
-    if (!was_blocking) { serial.blocking(); }
+byte_array read_until(Serial &serial, size_t count, char end) {
+    auto available = static_cast<size_t>(serial.available());
     byte_array bytes(count);
-    while (count--) {
-        bytes.push_back(static_cast<char>(serial.getchar()));
+    char *s = bytes.data();
+    char c;
+    while (available--) {
+        c = serial.getchar();
+        bytes.push_back(c);
+        if (c == end) { break; }
     }
-    if (!was_blocking) { serial.non_blocking(); }
     return bytes;
 }
 
