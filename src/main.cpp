@@ -6,6 +6,8 @@
 #include "utility.h"
 #include "sam.h"
 
+using wlp::get;
+
 Sam sam;
 
 void setup() {
@@ -37,7 +39,9 @@ void setup() {
  */
 void loop() {
     byte_array bytes = read_available(uart);
-    if (!bytes.empty()) {
-        trace << to_string(bytes);
+    if (bytes.size() == 5) {
+        auto data = decode_message(bytes);
+        trace << get<0>(data) << " : " << get<1>(data) << endl;
+        sam.execute_move(data);
     }
 }
