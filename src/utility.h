@@ -12,7 +12,7 @@ IOStream &operator<<(IOStream &ios, const string &str);
 
 IOStream &operator<<(IOStream &ios, const vector2i &vec);
 
-byte_array read_blocking(Serial &serial, size_t count);
+byte_array read_until(Serial &serial, size_t count, char end);
 
 byte_array read_up_to(Serial &serial, size_t count);
 
