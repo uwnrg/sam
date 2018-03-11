@@ -20,7 +20,7 @@ const int uPower = 255; //up solenoid power
 const int movementTime = 15; 
 //Y-axis corresponds to pin
 const int LeftPin = 11;
-const int RightPin =3;
+const int RightPin = 3;
 const int Brake = 4;
 
 // TODO: make this an enum

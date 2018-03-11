@@ -22,8 +22,8 @@ void Sam::begin() {
     m_brake_y.high();
     m_control_x.high();
     m_control_y.high();
-    m_solenoid_x.write(0);
-    m_solenoid_y.write(0);
+    //m_solenoid_x.write(0);
+    //m_solenoid_y.write(0);
 }
 
 void Sam::sleep() {

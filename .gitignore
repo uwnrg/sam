@@ -2,5 +2,3 @@ wcosa/
 CMakeListsPrivate.txt
 .idea/
 cmake-build-debug/
-.pkg/
-lib/
