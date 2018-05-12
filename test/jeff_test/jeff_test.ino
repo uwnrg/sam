@@ -33,7 +33,7 @@ void setup() {
 
 void pulse_sol(int sol_pin, int power = 255) {
   analogWrite(sol_pin, power);
-  delay(50);//was 10
+  delay(10);//was 10
   analogWrite(sol_pin, 0);
 }
 
