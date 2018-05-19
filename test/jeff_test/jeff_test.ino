@@ -5,6 +5,7 @@
 #define DOWN  115
 #define UP    119
 #define POWER 112
+#define DELAY 108
 
 #define sol_a 3
 #define sol_b 6
@@ -18,8 +19,9 @@
 
 int power[4] = {255, 255, 255, 255}; //UP DOWN LEFT RIGHT
 int solenoids[4] = {sol_up, sol_down, sol_left, sol_right};
-int state = 0; //0 is default, 1 means getting solenoid, 2 means getting power level
+int state = 0; //0 is default, 1 means getting solenoid, 2 means getting power, 3 means getting delay level
 int solenoid = 0;
+int delay_time = 50;
 
 void setup() {
   pinMode(sol_a, OUTPUT);
@@ -37,12 +39,12 @@ void setup() {
   Serial.println("SAM Begin");
 }
 
-void pulse_sol(int sol_pin, int power = 255) {
+void pulse_sol(int sol_pin, int power = 255, int delay_time = 50) {
   Serial.print("Pulsing with power:");
   Serial.print(power);
   Serial.print('\n');
   analogWrite(sol_pin, power);
-  delay(50);//was 10
+  delay(delay_time);//was 10
   analogWrite(sol_pin, 0);
 }
 
@@ -63,6 +65,9 @@ int read_msg(byte msg) {
     case POWER:
       Serial.println("CHANGE POWER LEVEL");
       return 4;
+    case DELAY:
+      Serial.println("CHANGE DELAY TIME");
+      return 5; 
     default:
       Serial.println("Unknown message");
       return -1;
@@ -72,7 +77,7 @@ int read_msg(byte msg) {
 int handle_msg(byte msg, int power[4], int solenoids[4]) {
   int id = read_msg(msg);
   if (id >= 0 && id < 4) { 
-    pulse_sol(solenoids[id], power[id]);
+    pulse_sol(solenoids[id], power[id], delay_time);
   }
   return id;
 }
@@ -83,8 +88,11 @@ void loop() {
     if (state == 0) {
       byte msg = Serial.read();
       Serial.println(msg, BIN);
-      if (handle_msg(msg, power, solenoids) == 4) {
+      int msg_id = handle_msg(msg, power, solenoids);
+      if (msg_id == 4) {
         state = 1;
+      } else if (msg_id == 5) {
+        state = 3;
       }
     } else if (state == 1) {
       byte msg = Serial.read();
@@ -104,6 +112,14 @@ void loop() {
       Serial.print(value);
       Serial.print('\n');
       power[solenoid] = value;
+      state = 0;
+    } else if (state == 3) {
+      byte msg = Serial.read();
+      int value = msg;
+      Serial.print("New delay time: ");
+      Serial.print(value);
+      Serial.print('\n');
+      delay_time = value;
       state = 0;
     }
   }
